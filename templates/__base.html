@@ -1,0 +1,53 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+
+<head>
+    {% include '_yandex_counter.html' %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block meta %}{% endblock %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+
+    {% include '_favicon.html' %}
+    
+    {% block css_before %}{% endblock %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% if css_path %}
+    <link type="text/css" href="{% static css_path %}" rel="stylesheet">
+    {% else %}
+    <link type="text/css" href="{% static 'css/app.css' %}" rel="stylesheet">
+    {% endif %}
+    {% block css_head %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body class=" fixed-layout">
+
+    <div class="preloader">
+        <div class="sk-double-bounce">
+            <div class="sk-child sk-double-bounce1"></div>
+            <div class="sk-child sk-double-bounce2"></div>
+        </div>
+    </div>
+
+    {% block content %}{% endblock %}
+    {% include '_page_footer.html' %}
+    <script src="{% static 'vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendor/dom-factory.js' %}"></script>
+    <script src="{% static 'vendor/material-design-kit.js' %}"></script>
+    {% if js_path %}
+    <script src="{% static js_path %}"></script>
+    {% else %}
+    <script src="{% static 'js/app.js' %}"></script>
+    {% endif %}
+    {% block js_body %}{% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+{% extends '__base_profile_edit.html' %}
+
+{% load i18n %}
+{% load static %}
+{% block section1_title %}{% trans 'Основная информация' %}{% endblock %}
+
+{% block section1_content %}
+
+<div class="list-group list-group-form">
+    <div class="list-group-item">
+        <div class="form-group row mb-0">
+            <label class="col-form-label col-sm-3">Login</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" value="{{ login }}" placeholder="Login ..." disabled>
+            </div>
+        </div>
+    </div>
+    <div class="list-group-item">
+        <div class="form-group row mb-0">
+            <label class="col-form-label col-sm-3">{% trans 'Имя' %}</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" value="{{ first_name }}" name="first_name"
+                    placeholder="{% trans 'Имя' %} ...">
+            </div>
+        </div>
+    </div>
+    <div class="list-group-item">
+        <div class="form-group row mb-0">
+            <label class="col-form-label col-sm-3">{% trans 'Аватар' %}</label>
+            <div class="col-sm-9 media align-items-center">
+                <div class="media-left mr-16pt">
+                    {% if profile.get_avatar_url %}
+                    <img src="{{ profile.get_avatar_url }}" alt="people" width="56" class="rounded-circle">
+                    {% else %}
+                    <img src="{% static 'images/people/student_white.svg' %}" alt="people" width="56"
+                        class="rounded-circle bg-gradient-primary">
+                    {% endif %}
+                </div>
+                <div class="media-body">
+                    <div class="custom-file">
+                        {{ profile_form.avatar }}
+                        <label id="labelForAvatar" class="custom-file-label" for="id_avatar">Choose file</label>
+                    </div>
+                    {% if profile_form.avatar.errors %}
+                    <div class="alert alert-danger my-2" role="alert" id="check_confirm_alert">
+                        <ul class="py-0 px-3 my-0">
+                            {% for error in profile_form.avatar.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-group-item">
+        <div class="form-group row mb-0">
+            <label class="col-form-label col-sm-3">{% trans 'О себе' %}</label>
+            <div class="col-sm-9">
+                {{ profile_form.description }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js_body %}
+<script>
+    var avatarInput = document.getElementById('id_avatar');
+    if (avatarInput != null) {
+        avatarInput.oninput = function () {
+            labelForAvatar.innerText = avatarInput.files[0].name
+        }
+    }
+</script>
+{% endblock %}
