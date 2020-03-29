@@ -1,0 +1,31 @@
+server {
+    listen 80;
+    listen 443 ssl;
+    ssl_certificate /etc/ssl/certs/pumpskill.crt;
+    ssl_certificate_key /etc/ssl/private/pumpskill.key;
+    server_name pumpskill.ru;
+    
+    if ($host ~* www\.(.*)) {
+       set $host_without_www $1;
+       rewrite ^(.*)$ https://pumpskill.ru permanent;
+    }
+
+    if ($scheme = http) {
+        return 301 https://$server_name$request_uri;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/pumpskill_project/env/PumpSkill;
+    }
+
+    location /media/ {
+        root /home/pumpskill_project/env/PumpSkill;
+    }
+
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/pumpskill_project/env/PumpSkill/PumpSkill.sock;
+    }
+}
